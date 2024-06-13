@@ -5,14 +5,14 @@ import { AlbumResponse } from "./types";
 const app = express();
 
 const CORS_OPTIONS = {
-  origin: "http://localhost:3001", // frontend
+  origin: "http://localhost:4000", // frontend
 };
 app.use(cors(CORS_OPTIONS));
 
 const port = process.env.PORT ?? 3000;
 
 const ITUNES_URL = "https://itunes.apple.com";
-const ARTIST_ID = "909253";
+const ARTIST_ID = "408932";
 const ITUNES_URL_ARTIST_ALBUMS = `${ITUNES_URL}/lookup?id=${ARTIST_ID}&entity=album`;
 
 app.get("/albums", async (req, res) => {
