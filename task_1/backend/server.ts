@@ -1,7 +1,9 @@
 import express from "express";
+import cors from "cors";
 import { AlbumResponse } from "./types";
 
 const app = express();
+app.use(cors());
 const port = process.env.PORT ?? 3000;
 
 const ITUNES_URL = "https://itunes.apple.com";
