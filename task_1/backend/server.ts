@@ -9,21 +9,39 @@ const ARTIST_ID = "909253";
 const ITUNES_URL_ARTIST_ALBUMS = `${ITUNES_URL}/lookup?id=${ARTIST_ID}&entity=album`;
 
 app.get("/albums", async (req, res) => {
-  // Fetch the albums from the iTunes API
-  const result = await fetch(ITUNES_URL_ARTIST_ALBUMS);
-  const albumsResponse = (await result.json()) as AlbumResponse;
-  const albums = albumsResponse.results;
+  try {
+    // Fetch the albums from the iTunes API
+    const result = await fetch(ITUNES_URL_ARTIST_ALBUMS);
 
-  // Filter out the unique albums
-  const seen = new Set();
-  const uniqueAlbums = albums.filter((album) => {
-    const duplicate = seen.has(album.collectionName);
-    seen.add(album.collectionName);
-    return !duplicate;
-  });
+    // Check if the request was successful
+    if (!result.ok) {
+      return res.status(result.status).send("Could not fetch albums");
+    }
 
-  // Return the unique albums
-  return res.status(200).json(uniqueAlbums);
+    // Parse the response
+    let albumsResponse: AlbumResponse;
+    try {
+      albumsResponse = (await result.json()) as AlbumResponse;
+    } catch (jsonError) {
+      console.error(jsonError);
+      return res.status(500).send("Could not parse JSON");
+    }
+    const albums = albumsResponse.results;
+
+    // Filter out the unique albums
+    const seen = new Set();
+    const uniqueAlbums = albums.filter((album) => {
+      const duplicate = seen.has(album.collectionName);
+      seen.add(album.collectionName);
+      return !duplicate;
+    });
+
+    // Return the unique albums
+    return res.status(200).json(uniqueAlbums);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 
 app.listen(port, () => {
