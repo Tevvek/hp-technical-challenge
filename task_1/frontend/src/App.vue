@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Logo from './components/Logo.vue'
-import Album from './components/Album.vue'
+import Logo from '@/components/Logo.vue';
+import Album from '@/components/Album.vue';
+import Main from '@/views/main.vue';
 </script>
 
 <template>
@@ -26,15 +27,9 @@ import Album from './components/Album.vue'
       </div>
     </header>
 
-    <!-- Main with albums -->
-    <main class="bg-red-200 p-10">
-
-      <div class="grid grid-cols-4 gap-10">
-        <!-- One album -->
-        <Album v-for="i in 10" :key="i" />
-      </div>
-      <!-- Albums grid -->
-    </main>
+    <Suspense>
+      <Main />
+    </Suspense>
 
     <!-- Little footer for more info -->
     <footer class="flex justify-center items-center bg-blue-400 text-white">
@@ -42,5 +37,3 @@ import Album from './components/Album.vue'
     </footer>
   </div>
 </template>
-
-<style scoped></style>
