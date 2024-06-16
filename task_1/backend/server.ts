@@ -5,7 +5,7 @@ import { AlbumResponse } from "./types";
 const app = express();
 
 const CORS_OPTIONS = {
-  origin: "http://localhost:4000", // frontend
+  origin: "http://localhost:5173", // frontend
 };
 app.use(cors(CORS_OPTIONS));
 
