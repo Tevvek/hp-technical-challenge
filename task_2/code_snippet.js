@@ -45,7 +45,7 @@ async function findOrCreateUser(authId, email) {
 }
 
 function addInvitationToShop(shop, invitationId) {
-  if (shop.invitations.indexOf(invitationId) === -1) {
+  if (!shop.invitations.includes(invitationId)) {
     shop.invitations.push(invitationId);
   }
 }
