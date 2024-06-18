@@ -17,7 +17,10 @@ const search = ref(route.query.search ?? '');
 const debouncedSearch = useDebounce(search, 500)
 
 watch(debouncedSearch, () => {
-    router.replace({ query: { search: debouncedSearch.value } })
+    // Reduce number of requests by enforcing minimum search length
+    if (debouncedSearch.value.length >= 2 || debouncedSearch.value.length === 0) {
+        router.replace({ query: { search: debouncedSearch.value || undefined } });
+    }
 })
 
 </script>
