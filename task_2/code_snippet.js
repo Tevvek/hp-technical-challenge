@@ -12,12 +12,12 @@ exports.inviteUser = async function (req, res) {
     const { email } = invitationBody;
 
     const createdUser = await findOrCreateUser(authId, email);
-
     const shop = await Shop.findById(shopId);
 
-    if (err || !shop) {
-      return res.status(500).send(err || { message: "No shop found" });
+    if (!shop) {
+      return res.status(500).send({ message: "No shop found" });
     }
+
     if (shop.invitations.indexOf(invitationResponse.body.invitationId)) {
       shop.invitations.push(invitationResponse.body.invitationId);
     }
