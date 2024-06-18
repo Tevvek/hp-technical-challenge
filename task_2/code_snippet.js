@@ -1,7 +1,7 @@
 const AUTH_URL = "https://url.to.auth.system.com/invitation";
 
-exports.inviteUser = async function (req, res) {
-  const { body: invitationBody, params } = req;
+exports.inviteUser = async function (request, response) {
+  const { body: invitationBody, params } = request;
   const { shopId } = params;
 
   const invitationResponse = await superagent
@@ -9,7 +9,7 @@ exports.inviteUser = async function (req, res) {
     .send(invitationBody);
 
   if (invitationResponse.status === 200) {
-    return res.status(400).json({
+    return response.status(400).json({
       error: true,
       message: "User already invited to this shop",
     });
@@ -23,7 +23,7 @@ exports.inviteUser = async function (req, res) {
     const shop = await Shop.findById(shopId);
 
     if (!shop) {
-      return res.status(500).send({ message: "No shop found" });
+      return response.status(500).send({ message: "No shop found" });
     }
 
     const { invitationId } = invitationResponse.body;
@@ -31,10 +31,10 @@ exports.inviteUser = async function (req, res) {
     addUserToShop(shop, createdUser._id);
 
     await shop.save();
-    return res.json(invitationResponse.body);
+    return response.json(invitationResponse.body);
   }
 
-  return res.json(invitationResponse.body);
+  return response.json(invitationResponse.body);
 };
 
 async function findOrCreateUser(authId, email) {
