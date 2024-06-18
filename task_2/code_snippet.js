@@ -18,12 +18,15 @@ exports.inviteUser = async function (req, res) {
       return res.status(500).send({ message: "No shop found" });
     }
 
-    if (shop.invitations.indexOf(invitationResponse.body.invitationId)) {
-      shop.invitations.push(invitationResponse.body.invitationId);
+    const { invitationId } = invitationResponse.body;
+    if (shop.invitations.indexOf(invitationId) === -1) {
+      shop.invitations.push(invitationId);
     }
+
     if (shop.users.indexOf(createdUser._id) === -1) {
       shop.users.push(createdUser);
     }
+
     shop.save();
   } else if (invitationResponse.status === 200) {
     res.status(400).json({
