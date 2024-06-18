@@ -4,40 +4,45 @@ import { User, Shop } from "./models";
 const AUTH_URL = "https://url.to.auth.system.com/invitation";
 
 async function inviteUser(request, response) {
-  const { body: invitationBody, params } = request;
-  const { shopId } = params;
+  try {
+    const { body: invitationBody, params } = request;
+    const { shopId } = params;
 
-  const invitationResponse = await superagent
-    .post(AUTH_URL)
-    .send(invitationBody);
+    const invitationResponse = await superagent
+      .post(AUTH_URL)
+      .send(invitationBody);
 
-  if (invitationResponse.status === 200) {
-    return response.status(400).json({
-      error: true,
-      message: "User already invited to this shop",
-    });
-  }
-
-  if (invitationResponse.status === 201) {
-    const { authId } = invitationResponse.body;
-    const { email } = invitationBody;
-
-    const createdUser = await findOrCreateUser(authId, email);
-    const shop = await Shop.findById(shopId);
-
-    if (!shop) {
-      return response.status(500).send({ message: "No shop found" });
+    if (invitationResponse.status === 200) {
+      return response.status(400).json({
+        error: true,
+        message: "User already invited to this shop",
+      });
     }
 
-    const { invitationId } = invitationResponse.body;
-    addInvitationToShop(shop, invitationId);
-    addUserToShop(shop, createdUser._id);
+    if (invitationResponse.status === 201) {
+      const { authId } = invitationResponse.body;
+      const { email } = invitationBody;
 
-    await shop.save();
+      const createdUser = await findOrCreateUser(authId, email);
+      const shop = await Shop.findById(shopId);
+
+      if (!shop) {
+        return response.status(500).send({ message: "No shop found" });
+      }
+
+      const { invitationId } = invitationResponse.body;
+      addInvitationToShop(shop, invitationId);
+      addUserToShop(shop, createdUser._id);
+
+      await shop.save();
+      return response.json(invitationResponse.body);
+    }
+
     return response.json(invitationResponse.body);
+  } catch (error) {
+    console.error("Error inviting user:", error);
+    return response.status(500).send({ message: error.message });
   }
-
-  return response.json(invitationResponse.body);
 }
 
 async function findOrCreateUser(authId, email) {
