@@ -1,15 +1,20 @@
 import express from "express";
 import cors from "cors";
 import { AlbumResponse } from "./types";
+import dotenv from "dotenv";
+
+dotenv.config({
+  path: "../.env",
+});
 
 const app = express();
 
 const CORS_OPTIONS = {
-  origin: "http://localhost:5173", // frontend
+  origin: `http://localhost:${process.env.FRONTEND_PORT}`,
 };
 app.use(cors(CORS_OPTIONS));
 
-const port = process.env.PORT ?? 3000;
+const port = process.env.BACKEND_PORT || 4000;
 
 const ITUNES_URL = "https://itunes.apple.com";
 const ARTIST_ID = "408932";
