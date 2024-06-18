@@ -23,14 +23,17 @@ exports.inviteUser = async function (req, res) {
     addUserToShop(shop, createdUser._id);
 
     await shop.save();
-  } else if (invitationResponse.status === 200) {
-    res.status(400).json({
+    return res.json(invitationResponse.body);
+  }
+
+  if (invitationResponse.status === 200) {
+    return res.status(400).json({
       error: true,
       message: "User already invited to this shop",
     });
-    return;
   }
-  res.json(invitationResponse);
+
+  return res.json(invitationResponse.body);
 };
 
 async function findOrCreateUser(authId, email) {
