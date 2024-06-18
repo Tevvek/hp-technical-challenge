@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import AlbumsView from "./views/AlbumsView.vue";
 
-const routes = [{ path: "/", component: AlbumsView }];
+const routes = [
+  { path: "/", component: () => import("./views/AlbumsView.vue") }, // lazy for better performance
+];
 
 const router = createRouter({
   history: createWebHistory(),
