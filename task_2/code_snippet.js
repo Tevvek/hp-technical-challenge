@@ -8,19 +8,10 @@ exports.inviteUser = async function (req, res) {
     .send(invitationBody);
 
   if (invitationResponse.status === 201) {
-    const createdUser = await User.findOneAndUpdate(
-      {
-        authId: invitationResponse.body.authId,
-      },
-      {
-        authId: invitationResponse.body.authId,
-        email: invitationBody.email,
-      },
-      {
-        upsert: true,
-        new: true,
-      }
-    );
+    const { authId } = invitationResponse.body;
+    const { email } = invitationBody;
+
+    const createdUser = await findOrCreateUser(authId, email);
 
     Shop.findById(shopId).exec(function (err, shop) {
       if (err || !shop) {
@@ -43,3 +34,11 @@ exports.inviteUser = async function (req, res) {
   }
   res.json(invitationResponse);
 };
+
+async function findOrCreateUser(authId, email) {
+  return await User.findOneAndUpdate(
+    { authId },
+    { authId, email },
+    { upsert: true, new: true }
+  );
+}
