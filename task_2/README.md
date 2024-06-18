@@ -18,3 +18,4 @@
 18. Add imports of superagent and models (at least to show how it would have been instead)
 19. Wrap entire function in try/catch so if any error is thrown we can control it.
 20. Wrap findOrCreateUser in a try/catch too as it performs a database operation and could fail.
+21. Because we are performing database writes and updates, we use transactions to make sure that if something goes wrong, we don't make previous changes persistent, if it nothing goes wrong, we do

@@ -1,9 +1,13 @@
 import superagent from "superagent";
 import { User, Shop } from "./models";
+import mongoose from "mongoose";
 
 const AUTH_URL = "https://url.to.auth.system.com/invitation";
 
 async function inviteUser(request, response) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const { body: invitationBody, params } = request;
     const { shopId } = params;
@@ -35,11 +39,20 @@ async function inviteUser(request, response) {
       addUserToShop(shop, createdUser._id);
 
       await shop.save();
+
+      await session.commitTransaction();
+      session.endSession();
+
       return response.json(invitationResponse.body);
     }
 
+    await session.commitTransaction();
+    session.endSession();
+
     return response.json(invitationResponse.body);
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     console.error("Error inviting user:", error);
     return response.status(500).send({ message: error.message });
   }
