@@ -7,6 +7,13 @@ exports.inviteUser = async function (req, res) {
     .post(authUrl)
     .send(invitationBody);
 
+  if (invitationResponse.status === 200) {
+    return res.status(400).json({
+      error: true,
+      message: "User already invited to this shop",
+    });
+  }
+
   if (invitationResponse.status === 201) {
     const { authId } = invitationResponse.body;
     const { email } = invitationBody;
@@ -24,13 +31,6 @@ exports.inviteUser = async function (req, res) {
 
     await shop.save();
     return res.json(invitationResponse.body);
-  }
-
-  if (invitationResponse.status === 200) {
-    return res.status(400).json({
-      error: true,
-      message: "User already invited to this shop",
-    });
   }
 
   return res.json(invitationResponse.body);
