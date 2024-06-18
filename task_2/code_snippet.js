@@ -13,18 +13,18 @@ exports.inviteUser = async function (req, res) {
 
     const createdUser = await findOrCreateUser(authId, email);
 
-    Shop.findById(shopId).exec(function (err, shop) {
-      if (err || !shop) {
-        return res.status(500).send(err || { message: "No shop found" });
-      }
-      if (shop.invitations.indexOf(invitationResponse.body.invitationId)) {
-        shop.invitations.push(invitationResponse.body.invitationId);
-      }
-      if (shop.users.indexOf(createdUser._id) === -1) {
-        shop.users.push(createdUser);
-      }
-      shop.save();
-    });
+    const shop = await Shop.findById(shopId);
+
+    if (err || !shop) {
+      return res.status(500).send(err || { message: "No shop found" });
+    }
+    if (shop.invitations.indexOf(invitationResponse.body.invitationId)) {
+      shop.invitations.push(invitationResponse.body.invitationId);
+    }
+    if (shop.users.indexOf(createdUser._id) === -1) {
+      shop.users.push(createdUser);
+    }
+    shop.save();
   } else if (invitationResponse.status === 200) {
     res.status(400).json({
       error: true,
