@@ -1,7 +1,7 @@
 exports.inviteUser = function (req, res) {
-  var invitationBody = req.body;
-  var shopId = req.params.shopId;
-  var authUrl = "https://url.to.auth.system.com/invitation";
+  const invitationBody = req.body;
+  const shopId = req.params.shopId;
+  const authUrl = "https://url.to.auth.system.com/invitation";
 
   superagent
     .post(authUrl)
