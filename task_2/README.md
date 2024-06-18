@@ -7,3 +7,4 @@
 7. Fixed an issue with the code as it would not work. It was checking if the invitation already exists in shop.invitations and if so, push it to the array. It should add it to the array if it DOES NOT exist.
 8. Move logic of previous step into its own function.
 9. Change use of .indexOf to .includes for better readibility
+10. Do the same for adding user to array of users in shop. Make function, use includes instead of indexOf.
