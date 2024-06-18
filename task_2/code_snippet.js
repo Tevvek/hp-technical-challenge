@@ -1,8 +1,8 @@
 const AUTH_URL = "https://url.to.auth.system.com/invitation";
 
 exports.inviteUser = async function (req, res) {
-  const invitationBody = req.body;
-  const shopId = req.params.shopId;
+  const { body: invitationBody, params } = req;
+  const { shopId } = params;
 
   const invitationResponse = await superagent
     .post(AUTH_URL)
