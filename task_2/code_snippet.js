@@ -1,10 +1,11 @@
+const AUTH_URL = "https://url.to.auth.system.com/invitation";
+
 exports.inviteUser = async function (req, res) {
   const invitationBody = req.body;
   const shopId = req.params.shopId;
-  const authUrl = "https://url.to.auth.system.com/invitation";
 
   const invitationResponse = await superagent
-    .post(authUrl)
+    .post(AUTH_URL)
     .send(invitationBody);
 
   if (invitationResponse.status === 200) {

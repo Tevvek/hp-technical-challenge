@@ -11,3 +11,4 @@
 11. Await for saving the shop model.
 12. Fix another issue where response was returning the invitationResponse fully instead of its body. Make both cases 201 and 200 return their response. But still keep the last one in case the status is not 201 nor 200. Also, remove the 'else' from the status 200 because if everything goes OK it will return early.
 13. Completely personal, but I like to use a "guard" approach. Status 200 does nothing and returns early, thus it should be on top and status 201 should follow.
+14. Extract auth_url outside of function because it is (at least here) a constant, thus also changing its name to uppercase to indicate it is a value that doesn't change dynamically.
