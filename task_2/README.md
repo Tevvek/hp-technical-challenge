@@ -14,3 +14,4 @@
 14. Extract auth_url outside of function because it is (at least here) a constant, thus also changing its name to uppercase to indicate it is a value that doesn't change dynamically.
 15. Use deconstruction for request
 16. Completely personal, I like to not shorten names aka req becomes request and res becomes response.
+17. Instead of exporting using exports. we just definy a function and export it both like the default and an object so that we can use modules and import it as import {inviteUser } from ... or import inviteUser from ... instead of require(...)

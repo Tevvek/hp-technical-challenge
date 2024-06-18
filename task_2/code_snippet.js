@@ -1,6 +1,6 @@
 const AUTH_URL = "https://url.to.auth.system.com/invitation";
 
-exports.inviteUser = async function (request, response) {
+async function inviteUser(request, response) {
   const { body: invitationBody, params } = request;
   const { shopId } = params;
 
@@ -35,7 +35,7 @@ exports.inviteUser = async function (request, response) {
   }
 
   return response.json(invitationResponse.body);
-};
+}
 
 async function findOrCreateUser(authId, email) {
   return await User.findOneAndUpdate(
@@ -56,3 +56,6 @@ function addUserToShop(shop, userId) {
     shop.users.push(userId);
   }
 }
+
+export { inviteUser };
+export default inviteUser;
