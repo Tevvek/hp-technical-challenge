@@ -8,3 +8,4 @@
 8. Move logic of previous step into its own function.
 9. Change use of .indexOf to .includes for better readibility
 10. Do the same for adding user to array of users in shop. Make function, use includes instead of indexOf.
+11. Await for saving the shop model.

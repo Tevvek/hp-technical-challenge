@@ -22,7 +22,7 @@ exports.inviteUser = async function (req, res) {
     addInvitationToShop(shop, invitationId);
     addUserToShop(shop, createdUser._id);
 
-    shop.save();
+    await shop.save();
   } else if (invitationResponse.status === 200) {
     res.status(400).json({
       error: true,
