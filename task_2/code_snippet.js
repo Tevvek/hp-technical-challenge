@@ -19,9 +19,7 @@ exports.inviteUser = async function (req, res) {
     }
 
     const { invitationId } = invitationResponse.body;
-    if (shop.invitations.indexOf(invitationId) === -1) {
-      shop.invitations.push(invitationId);
-    }
+    addInvitationToShop(shop, invitationId);
 
     if (shop.users.indexOf(createdUser._id) === -1) {
       shop.users.push(createdUser);
@@ -44,4 +42,10 @@ async function findOrCreateUser(authId, email) {
     { authId, email },
     { upsert: true, new: true }
   );
+}
+
+function addInvitationToShop(shop, invitationId) {
+  if (shop.invitations.indexOf(invitationId) === -1) {
+    shop.invitations.push(invitationId);
+  }
 }

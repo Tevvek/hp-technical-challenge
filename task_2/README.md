@@ -5,3 +5,4 @@
 5. In step 3, we removed the callback which is the last argument in favour of an async/await approach. For the Shop findById we remove the .exec call in favour of the same approach.
 6. Remove 'err' from response status if no shop available
 7. Fixed an issue with the code as it would not work. It was checking if the invitation already exists in shop.invitations and if so, push it to the array. It should add it to the array if it DOES NOT exist.
+8. Move logic of previous step into its own function.
