@@ -46,11 +46,16 @@ async function inviteUser(request, response) {
 }
 
 async function findOrCreateUser(authId, email) {
-  return await User.findOneAndUpdate(
-    { authId },
-    { authId, email },
-    { upsert: true, new: true }
-  );
+  try {
+    return await User.findOneAndUpdate(
+      { authId },
+      { authId, email },
+      { upsert: true, new: true }
+    );
+  } catch (error) {
+    console.error("Error finding or creating user:", error);
+    throw error;
+  }
 }
 
 function addInvitationToShop(shop, invitationId) {
