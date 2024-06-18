@@ -1,3 +1,6 @@
+import superagent from "superagent";
+import { User, Shop } from "./models";
+
 const AUTH_URL = "https://url.to.auth.system.com/invitation";
 
 async function inviteUser(request, response) {
